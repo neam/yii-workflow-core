@@ -26,7 +26,6 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "yii-qa-state": "dev-develop",
         "yiisoft/yii": ">=1.1.0"
     }
 }

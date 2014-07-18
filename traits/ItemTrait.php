@@ -28,6 +28,22 @@ trait ItemTrait
         return $label;
     }
 
+    public function saveAppropriately()
+    {
+
+        $behaviors = $this->behaviors();
+        if (isset($behaviors['yii-qa-state'])) {
+            return $this->saveWithChangeSet();
+        } else {
+
+            if (!$this->save()) {
+                throw new SaveException($this);
+            }
+
+        }
+
+    }
+
     public function saveWithChangeSet()
     {
         /** @var ActiveRecord|QaStateBehavior $model */

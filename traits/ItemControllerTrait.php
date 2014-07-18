@@ -400,7 +400,10 @@ trait ItemControllerTrait
             if (!$item->save()) {
                 throw new SaveException($item);
             }
-            $item->refreshQaState();
+            $behaviors = $item->behaviors();
+            if (isset($behaviors['yii-qa-state'])) {
+                $item->refreshQaState();
+            }
             $message = "{$this->modelClass} Added";
 
             // Add edge if specified:
@@ -436,7 +439,9 @@ trait ItemControllerTrait
             throw new SaveException($item);
         }
 
-        $item->refreshQaState();
+        if (isset($behaviors['yii-qa-state'])) {
+            $item->refreshQaState();
+        }
 
         $message = "{$this->modelClass} Added";
 
@@ -734,8 +739,11 @@ trait ItemControllerTrait
 
         $model->scenario = $this->scenario;
 
-        if (Yii::app()->request->getPost($this->modelClass, false)) {
-            $this->handleEdges($model);
+        $behaviors = $model->behaviors();
+        if (isset($behaviors['yii-relational-graph-db'])) {
+            if (Yii::app()->request->getPost($this->modelClass, false)) {
+                $this->handleEdges($model);
+            }
         }
 
         $this->performAjaxValidation($model);
@@ -1282,7 +1290,7 @@ trait ItemControllerTrait
 
         if (isset($_POST[$this->modelClass])) {
             $model->attributes = $_POST[$this->modelClass];
-            $model->saveWithChangeSet();
+            $model->saveAppropriately();
         } elseif (isset($_GET[$this->modelClass])) {
             $model->attributes = $_GET[$this->modelClass];
         }
