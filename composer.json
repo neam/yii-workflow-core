@@ -1,0 +1,32 @@
+{
+    "name": "neam/yii-item",
+    "description": "todo",
+    "keywords": ["yii"],
+    "homepage": "https://github.com/neam/yii-item",
+    "type": "yii-extension",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fredrik Wollsén",
+            "email": "fredrik@neam.se"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "http://packages.phundament.com"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/neam/yii-qa-state"
+        }
+    ],
+    "autoload": {
+        "classmap": ["traits/"]
+    },
+    "require": {
+        "php": ">=5.4.0",
+        "yii-qa-state": "dev-develop",
+        "yiisoft/yii": ">=1.1.0"
+    }
+}
