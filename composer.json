@@ -1,8 +1,8 @@
 {
-    "name": "neam/yii-item",
+    "name": "neam/yii-workflow-core",
     "description": "todo",
     "keywords": ["yii"],
-    "homepage": "https://github.com/neam/yii-item",
+    "homepage": "https://github.com/neam/yii-workflow-core",
     "type": "yii-extension",
     "license": "MIT",
     "authors": [
