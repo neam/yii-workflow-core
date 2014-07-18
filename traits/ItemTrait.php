@@ -618,4 +618,12 @@ trait ItemTrait
             : $this->firstFlowStep();
     }
 
+    public function getAttributeHint($key)
+    {
+        $a = $this->attributeHints();
+        if (isset($a[$key])) {
+            return $a[$key];
+        }
+    }
+
 }

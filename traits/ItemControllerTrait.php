@@ -36,10 +36,11 @@ trait ItemControllerTrait
      */
     public function checkModelOperationAccessById($id, $operation)
     {
-        /** @var ActiveRecord|ItemTrait $model */
-        $model = ActiveRecord::model($this->modelClass)->findByPk($id);
 
-        if ($model instanceof ActiveRecord) {
+        /** @var CActiveRecord|ItemTrait $model */
+        $model = CActiveRecord::model($this->modelClass)->findByPk($id);
+
+        if ($model instanceof CActiveRecord) {
             return Yii::app()->user->checkModelOperationAccess($model, $operation);
         } else {
             throw new CHttpException(404, Yii::t('error', "Failed to check access: the $this->modelClass model with ID $id does not exist."));
@@ -1470,36 +1471,36 @@ trait ItemControllerTrait
         $breadcrumbs[$itemTitle] = array('view', 'id' => $model->id);
 
         switch ($this->action->id) {
-            case Controller::ACTION_EDIT:
-                $breadcrumbs[] = self::actionLabel(Controller::ACTION_EDIT);
+            case ItemControllerConstants::ACTION_EDIT:
+                $breadcrumbs[] = self::actionLabel(ItemControllerConstants::ACTION_EDIT);
                 break;
 
-            case Controller::ACTION_TRANSLATION_OVERVIEW:
-                $breadcrumbs[] = self::actionLabel(Controller::ACTION_TRANSLATION_OVERVIEW);
+            case ItemControllerConstants::ACTION_TRANSLATION_OVERVIEW:
+                $breadcrumbs[] = self::actionLabel(ItemControllerConstants::ACTION_TRANSLATION_OVERVIEW);
                 break;
 
-            case Controller::ACTION_TRANSLATE:
-                $breadcrumbs[] = self::actionLabel(Controller::ACTION_TRANSLATE);
+            case ItemControllerConstants::ACTION_TRANSLATE:
+                $breadcrumbs[] = self::actionLabel(ItemControllerConstants::ACTION_TRANSLATE);
                 break;
 
-            case Controller::ACTION_EVALUATE:
-                $breadcrumbs[] = self::actionLabel(Controller::ACTION_EVALUATE);
+            case ItemControllerConstants::ACTION_EVALUATE:
+                $breadcrumbs[] = self::actionLabel(ItemControllerConstants::ACTION_EVALUATE);
                 break;
 
-            case Controller::ACTION_PREPARE_FOR_REVIEW:
-                $breadcrumbs[] = self::actionLabel(Controller::ACTION_PREPARE_FOR_REVIEW);
+            case ItemControllerConstants::ACTION_PREPARE_FOR_REVIEW:
+                $breadcrumbs[] = self::actionLabel(ItemControllerConstants::ACTION_PREPARE_FOR_REVIEW);
                 break;
 
-            case Controller::ACTION_PREPARE_FOR_PUBLISHING:
-                $breadcrumbs[] = self::actionLabel(Controller::ACTION_PREPARE_FOR_PUBLISHING);
+            case ItemControllerConstants::ACTION_PREPARE_FOR_PUBLISHING:
+                $breadcrumbs[] = self::actionLabel(ItemControllerConstants::ACTION_PREPARE_FOR_PUBLISHING);
                 break;
 
-            case Controller::ACTION_PREVIEW:
-                $breadcrumbs[] = self::actionLabel(Controller::ACTION_PREVIEW);
+            case ItemControllerConstants::ACTION_PREVIEW:
+                $breadcrumbs[] = self::actionLabel(ItemControllerConstants::ACTION_PREVIEW);
                 break;
 
             default:
-                $breadcrumbs[] = self::actionLabel(Controller::ACTION_VIEW);
+                $breadcrumbs[] = self::actionLabel(ItemControllerConstants::ACTION_VIEW);
         }
 
         return $breadcrumbs;
@@ -1515,24 +1516,25 @@ trait ItemControllerTrait
         $defaultLabel = Yii::t('app', 'Action');
 
         $labels = array(
-            Controller::ACTION_BROWSE => Yii::t('app', 'Browse'),
-            Controller::ACTION_VIEW => Yii::t('app', 'View'),
-            Controller::ACTION_ADD => Yii::t('app', 'Add'),
-            Controller::ACTION_EDIT => Yii::t('app', 'Edit'),
-            Controller::ACTION_CLONE => Yii::t('app', 'Clone'),
-            Controller::ACTION_REMOVE => Yii::t('app', 'Remove'),
-            Controller::ACTION_PREVIEW => Yii::t('app', 'Preview'),
-            Controller::ACTION_TRANSLATE => Yii::t('app', 'Translate'),
-            Controller::ACTION_TRANSLATION_OVERVIEW => Yii::t('app', 'Translate'),
-            Controller::ACTION_EVALUATE => Yii::t('app', 'Evaluate'),
-            Controller::ACTION_PROOFREAD => Yii::t('app', 'Proofread'),
-            Controller::ACTION_APPROVE => Yii::t('app', 'Approve'),
-            Controller::ACTION_PUBLISH => Yii::t('app', 'Publish'),
-            Controller::ACTION_PREPARE_FOR_REVIEW => Yii::t('app', 'Prepare for Review'),
-            Controller::ACTION_PREPARE_FOR_PUBLISHING => Yii::t('app', 'Prepare for Publishing'),
-            Controller::ACTION_CANCEL => Yii::t('app', 'Cancel'),
+            ItemControllerConstants::ACTION_BROWSE => Yii::t('app', 'Browse'),
+            ItemControllerConstants::ACTION_VIEW => Yii::t('app', 'View'),
+            ItemControllerConstants::ACTION_ADD => Yii::t('app', 'Add'),
+            ItemControllerConstants::ACTION_EDIT => Yii::t('app', 'Edit'),
+            ItemControllerConstants::ACTION_CLONE => Yii::t('app', 'Clone'),
+            ItemControllerConstants::ACTION_REMOVE => Yii::t('app', 'Remove'),
+            ItemControllerConstants::ACTION_PREVIEW => Yii::t('app', 'Preview'),
+            ItemControllerConstants::ACTION_TRANSLATE => Yii::t('app', 'Translate'),
+            ItemControllerConstants::ACTION_TRANSLATION_OVERVIEW => Yii::t('app', 'Translate'),
+            ItemControllerConstants::ACTION_EVALUATE => Yii::t('app', 'Evaluate'),
+            ItemControllerConstants::ACTION_PROOFREAD => Yii::t('app', 'Proofread'),
+            ItemControllerConstants::ACTION_APPROVE => Yii::t('app', 'Approve'),
+            ItemControllerConstants::ACTION_PUBLISH => Yii::t('app', 'Publish'),
+            ItemControllerConstants::ACTION_PREPARE_FOR_REVIEW => Yii::t('app', 'Prepare for Review'),
+            ItemControllerConstants::ACTION_PREPARE_FOR_PUBLISHING => Yii::t('app', 'Prepare for Publishing'),
+            ItemControllerConstants::ACTION_CANCEL => Yii::t('app', 'Cancel'),
         );
 
         return array_key_exists($actionId, $labels) ? $labels[$actionId] : $defaultLabel;
     }
+
 }
