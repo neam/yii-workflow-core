@@ -371,7 +371,7 @@ trait ItemControllerTrait
         ));
 
         $this->render(
-            '/_item/browse',
+            'vendor.neam.yii-workflow-ui.themes.simplicity.views._item.browse',
             array(
                 'model' => $model,
                 'dataProvider' => $dataProvider,
@@ -494,7 +494,7 @@ trait ItemControllerTrait
         $this->performAjaxValidation($model);
         $this->saveAndContinueOnSuccess($model);
         $stepCaptions = $model->flowStepCaptions();
-        $this->render('/_item/edit', array('model' => $model, 'step' => $step, 'stepCaption' => $stepCaptions[$step]));
+        $this->render('vendor.neam.yii-workflow-ui.themes.simplicity.views._item.edit', array('model' => $model, 'step' => $step, 'stepCaption' => $stepCaptions[$step]));
     }
 
     /**
@@ -516,7 +516,7 @@ trait ItemControllerTrait
         $this->buildBreadcrumbs($this->itemBreadcrumbs($model));
 
         $this->render(
-            '/_item/edit',
+            'vendor.neam.yii-workflow-ui.themes.simplicity.views._item.edit',
             array(
                 'model' => $model,
                 'step' => $step,
@@ -571,7 +571,7 @@ trait ItemControllerTrait
         $this->buildBreadcrumbs($this->itemBreadcrumbs($model));
 
         $this->render(
-            '/_item/evaluate',
+            'vendor.neam.yii-workflow-ui.themes.simplicity.views._item.evaluate',
             array(
                 'model' => $model,
                 'step' => $step,
@@ -599,7 +599,7 @@ trait ItemControllerTrait
         $this->buildBreadcrumbs($this->itemBreadcrumbs($model));
 
         $this->render(
-            '/_item/edit',
+            'vendor.neam.yii-workflow-ui.themes.simplicity.views._item.edit',
             array(
                 'model' => $model,
                 'step' => $step,
@@ -640,13 +640,13 @@ trait ItemControllerTrait
         /** @var Controller|ItemController $this */
         $this->buildBreadcrumbs($this->itemBreadcrumbs($model));
 
-        $this->render('/_item/preview', array('model' => $model, 'workflowCaption' => Yii::t('app', 'Preview')));
+        $this->render('vendor.neam.yii-workflow-ui.themes.simplicity.views._item.preview', array('model' => $model, 'workflowCaption' => Yii::t('app', 'Preview')));
     }
 
     public function actionProofread($id)
     {
         $model = $this->loadModel($id);
-        $this->render('/_item/proofread', array('model' => $model));
+        $this->render('vendor.neam.yii-workflow-ui.themes.simplicity.views._item.proofread', array('model' => $model));
     }
 
     /**
@@ -762,7 +762,7 @@ trait ItemControllerTrait
         /** @var Controller|ItemController $this */
         $this->buildBreadcrumbs($this->itemBreadcrumbs($model));
 
-        $this->render('/_item/edit', array(
+        $this->render('vendor.neam.yii-workflow-ui.themes.simplicity.views._item.edit', array(
             'model' => $model,
             'step' => $step,
             'stepCaption' => $stepCaptions[$step],
@@ -1055,13 +1055,13 @@ trait ItemControllerTrait
     public function actionRemove($id)
     {
         $model = $this->saveAndContinueOnSuccess($id);
-        $this->render('/_item/remove', array('model' => $model));
+        $this->render('vendor.neam.yii-workflow-ui.themes.simplicity.views._item.remove', array('model' => $model));
     }
 
     public function actionReplace($id)
     {
         $model = $this->saveAndContinueOnSuccess($id);
-        $this->render('/_item/replace', array('model' => $model));
+        $this->render('vendor.neam.yii-workflow-ui.themes.simplicity.views._item.replace', array('model' => $model));
     }
 
     /**
@@ -1082,7 +1082,7 @@ trait ItemControllerTrait
         $this->buildBreadcrumbs($this->itemBreadcrumbs($model));
 
         $this->render(
-            '/_item/translation-overview',
+            'vendor.neam.yii-workflow-ui.themes.simplicity.views._item.translation-overview',
             array(
                 'model' => $model,
             )
@@ -1114,7 +1114,7 @@ trait ItemControllerTrait
         $this->buildBreadcrumbs($this->itemBreadcrumbs($model));
 
         $this->render(
-            '/_item/edit',
+            'vendor.neam.yii-workflow-ui.themes.simplicity.views._item.edit',
             array(
                 'model' => $model,
                 'step' => $step,
