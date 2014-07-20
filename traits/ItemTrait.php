@@ -16,16 +16,17 @@ trait ItemTrait
      */
     public function getItemLabel()
     {
-        /** @var ActiveRecord $this */
+        /** @var CActiveRecord $this */
 
-        $class = get_class($this);
-        $labels = DataModel::modelLabels();
-
-        $label = isset($labels[$class])
-            ? Yii::t('app', $labels[$class], 1) . ' #' . $this->id
-            : '';
+        $classLabel = $this->getClassLabel();
+        $label = Yii::t('app', $classLabel, 1) . ' #' . $this->id;
 
         return $label;
+    }
+
+    public function getClassLabel()
+    {
+        return get_class($this);
     }
 
     public function saveAppropriately()
