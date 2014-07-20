@@ -17,3 +17,6 @@ currently supported workflows:
     const ACTION_PREPARE_FOR_PUBLISHING = 'prepareForPublishing';
     const ACTION_CANCEL = 'cancel';
 
+config
+
+    require($applicationDirectory . '/../vendor/neam/yii-workflow-core/config/yii-workflow-core.php');
