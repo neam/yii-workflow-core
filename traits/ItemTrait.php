@@ -37,8 +37,12 @@ trait ItemTrait
             return $this->saveWithChangeSet();
         } else {
 
-            if (!$this->save()) {
-                throw new SaveException($this);
+            try {
+                if (!$this->save()) {
+                    throw new SaveException($this);
+                }
+            } catch (Exception $e) {
+                $this->addError('id', $e->getMessage());
             }
 
         }
