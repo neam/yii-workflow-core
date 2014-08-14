@@ -33,7 +33,7 @@ trait ItemTrait
     {
 
         $behaviors = $this->behaviors();
-        if (isset($behaviors['yii-qa-state'])) {
+        if (isset($behaviors['qa-state'])) {
             return $this->saveWithChangeSet();
         } else {
 
