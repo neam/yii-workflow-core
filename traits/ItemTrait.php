@@ -594,8 +594,8 @@ trait ItemTrait
         $width = $presetConfig['commands']['resize'][0];
         $height = $presetConfig['commands']['resize'][1];
 
-        return isset($this->thumbnail_media_id)
-            ? $this->thumbnailMedia->image($p3preset)
+        return isset($this->contest_overlay_media_id)
+            ? $this->contestOverlayMedia->image($p3preset)
             : TbHtml::image("http://placehold.it/{$width}x{$height}");
     }
 
