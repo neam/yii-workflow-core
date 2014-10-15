@@ -154,6 +154,17 @@ trait ItemTrait
     {
         $statusRequirements = $this->statusRequirements();
 
+        // Allow empty status requirements by defaulting to requiring "id"
+        if (empty($statusRequirements['draft'])) {
+            $statusRequirements['draft'] = array('id');
+        }
+        if (empty($statusRequirements['reviewable'])) {
+            $statusRequirements['reviewable'] = array('id');
+        }
+        if (empty($statusRequirements['publishable'])) {
+            $statusRequirements['publishable'] = array('id');
+        }
+
         $statusRules = array();
         $statusRules['draft'] = array(implode(', ', $statusRequirements['draft']), 'required', 'on' => 'draft,reviewable,publishable');
         $statusRules['reviewable'] = array(implode(', ', $statusRequirements['reviewable']), 'required', 'on' => 'reviewable,publishable');
