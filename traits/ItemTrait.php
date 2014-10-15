@@ -430,7 +430,7 @@ trait ItemTrait
         $translatableAttributes = $this->getTranslatableAttributes();
         //codecept_debug(compact("translatableAttributes"));
         if (empty($translatableAttributes)) {
-            return array();
+            return $this->zeroProgressI18nRules();
         }
 
         // Pick the first translatable attribute, if any
@@ -444,21 +444,7 @@ trait ItemTrait
 
         // If there currently is nothing to translate, then the translation progress should equal 0%
         if (empty($currentlyTranslatableAttributes)) {
-
-            // Add an always invalid status requirement for each language upon the first translatable attribute
-            $i18nRules = array();
-            foreach (LanguageHelper::getCodes() as $language) {
-                $i18nRules[] = array($attribute, 'compare', 'compareValue' => -1, 'on' => 'translate_into_' . $language);
-
-                /*
-                foreach ($this->flowSteps() as $step => $fields) {
-                    $i18nRules[] = array($attribute, 'compare', 'compareValue' => -1, 'on' => "into_$language-step_$step");
-                }
-                */
-            }
-
-            // The result of the above is that there is at least one attribute in each language scenario, and that attribute does not validate, thus translation progress equals 0% as wanted
-            return $i18nRules;
+            return $this->zeroProgressI18nRules();
         }
 
         $i18nRules = array();
@@ -503,6 +489,33 @@ trait ItemTrait
 
         return $i18nRules;
     }
+
+    /**
+     * Add an always invalid status requirement for each language upon the primary key.
+     * The result being that there is at least one attribute in each language scenario, and that attribute
+     * does not validate, thus translation progress equals 0% as wanted.
+     * @return array
+     */
+    public function zeroProgressI18nRules()
+    {
+
+        // Add an always invalid status requirement for each language upon the primary key
+        $i18nRules = array();
+        foreach (LanguageHelper::getCodes() as $language) {
+            $i18nRules[] = array('id', 'compare', 'compareValue' => -1, 'on' => 'translate_into_' . $language);
+
+            /*
+            foreach ($this->flowSteps() as $step => $fields) {
+                $i18nRules[] = array($attribute, 'compare', 'compareValue' => -1, 'on' => "into_$language-step_$step");
+            }
+            */
+        }
+
+        // The result of the above is that there is at least one attribute in each language scenario, and that attribute does not validate, thus translation progress equals 0% as wanted
+        return $i18nRules;
+
+    }
+
 
     public function generateInlineValidatorI18nRules($attribute, $inlineValidator)
     {
