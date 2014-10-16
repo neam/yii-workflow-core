@@ -197,8 +197,7 @@ trait ItemTrait
      */
     public function isUnpublishable()
     {
-        return in_array($this->qaState()->status, array('public'))
-        && $this->belongsToAtLeastOneGroup()
+        return $this->belongsToAtLeastOneGroup()
         && $this->isPublished();
     }
 
