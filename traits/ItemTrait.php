@@ -29,12 +29,15 @@ trait ItemTrait
         return get_class($this);
     }
 
-    public function saveAppropriately()
+    /**
+     * @param array $scenarios Array of $scenarios to consider when calculating progress. If not specified, all scenarios will be recalculated, which may take quite some time
+     */
+    public function saveAppropriately($scenarios = null)
     {
 
         $behaviors = $this->behaviors();
         if (isset($behaviors['qa-state'])) {
-            return $this->saveWithChangeSet();
+            return $this->saveWithChangeSet($scenarios);
         } else {
 
             try {
@@ -49,13 +52,16 @@ trait ItemTrait
 
     }
 
-    public function saveWithChangeSet()
+    /**
+     * @param array $scenarios Array of $scenarios to consider. If not specified, all scenarios will be recalculated, which may take quite some time
+     */
+    public function saveWithChangeSet($scenarios = null)
     {
         /** @var ActiveRecord|QaStateBehavior $model */
         $model = $this;
 
         // Refresh qa state (to be sure that we have the most actual state)
-        $model->refreshQaState();
+        $model->refreshQaState($scenarios);
 
         // Start transaction
         /** @var CDbTransaction $transaction */
@@ -72,7 +78,7 @@ trait ItemTrait
             }
 
             // refresh qa state
-            $model->refreshQaState();
+            $model->refreshQaState($scenarios);
             $qsStates["after"] = $model->qaState()->attributes;
 
             // calculate difference
