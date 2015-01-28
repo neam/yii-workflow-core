@@ -663,9 +663,32 @@ trait ItemTrait
      */
     public function firstTranslationFlowStep()
     {
-        return (isset($this->firstTranslationFlowStep))
-            ? $this->firstTranslationFlowStep
-            : $this->firstFlowStep();
+        foreach ($this->flowSteps() as $step => $fields) {
+            if (!$this->isStepTranslatable($fields)) {
+                continue;
+            }
+            return $step;
+        }
+    }
+
+    /**
+     * @param $item
+     * @param $fields
+     * @return bool
+     */
+    public function isStepTranslatable($fields)
+    {
+        $currentlyTranslatableAttributes = $this->getCurrentlyTranslatableAttributes();
+
+        $numTranslatableAttributes = count($fields);
+        foreach ($fields as $field) {
+            $sourceLanguageContentAttribute = str_replace('_' . $this->source_language, '', $field);
+            if (!in_array($sourceLanguageContentAttribute, $currentlyTranslatableAttributes)) {
+                $numTranslatableAttributes--;
+            }
+        }
+
+        return $numTranslatableAttributes > 0;
     }
 
     public function getAttributeHint($key)
