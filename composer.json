@@ -26,7 +26,7 @@
     },
     "require": {
         "php": ">=5.4.0",
-        "yii-i18n-tools": "@dev",
+        "neam/yii-i18n-tools": "dev-develop",
         "yiisoft/yii": ">=1.1.0"
     }
 }
