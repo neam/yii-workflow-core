@@ -161,7 +161,7 @@ trait ItemTrait
      */
     public function statusRequirementsRules()
     {
-        $statusRequirements = $this->statusRequirements();
+        $statusRequirements = $this->definitionArrayWithSourceLanguageAttributes($this->statusRequirements());
 
         // Allow empty status requirements by defaulting to requiring "id"
         if (empty($statusRequirements['draft'])) {
@@ -294,8 +294,8 @@ trait ItemTrait
     public function flowStepRules()
     {
         // Metadata
-        $flowSteps = $this->flowSteps();
-        $statusRequirements = $this->statusRequirements();
+        $flowSteps = $this->definitionArrayWithSourceLanguageAttributes($this->flowSteps());
+        $statusRequirements = $this->definitionArrayWithSourceLanguageAttributes($this->statusRequirements());
 
         // Combine above to flow/step-dependent validation rules
         $flowStepRules = array();
