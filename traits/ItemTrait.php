@@ -304,13 +304,13 @@ trait ItemTrait
             foreach ($fields as $field) {
                 $onStatuses = array();
                 $flowStepRules[] = array($field, 'safe', 'on' => implode("-step_$step,", array('temporary', 'draft', 'reviewable', 'publishable')) . "-step_$step,step_$step");
-                if (in_array($field, $statusRequirements['draft'])) {
+                if (isset($statusRequirements['draft']) && in_array($field, $statusRequirements['draft'])) {
                     $onStatuses = array('draft', 'reviewable', 'publishable');
                 }
-                if (in_array($field, $statusRequirements['reviewable'])) {
+                if (isset($statusRequirements['reviewable']) && in_array($field, $statusRequirements['reviewable'])) {
                     $onStatuses = array('reviewable', 'publishable');
                 }
-                if (in_array($field, $statusRequirements['publishable'])) {
+                if (isset($statusRequirements['publishable']) && in_array($field, $statusRequirements['publishable'])) {
                     $onStatuses = array('publishable');
                 }
                 if (!empty($onStatuses)) {
