@@ -226,6 +226,11 @@ trait ItemTrait
      */
     public function isVisible()
     {
+        // If no node_id then it is not visible
+        if (!isset($this->node_id)) {
+            return false;
+        }
+
         $result = NodeHasGroup::model()->findAllByAttributes(array(
             'node_id' => $this->node_id,
             'visibility' => NodeHasGroup::VISIBILITY_VISIBLE,
@@ -240,6 +245,11 @@ trait ItemTrait
      */
     public function belongsToAtLeastOneGroup()
     {
+        // If no node_id then it does not belong to any group
+        if (!isset($this->node_id)) {
+            return false;
+        }
+
         $result = NodeHasGroup::model()->findAllByAttributes(array(
             'node_id' => $this->node_id,
         ));
@@ -377,11 +387,16 @@ trait ItemTrait
      * @return string
      * @throws CException
      */
-    public function getQaStateAttribute()
+    public function _getQaStateAttribute()
     {
         $modelClass = get_class($this);
         $attribute = $this->tableName() . '_qa_state_id';
+        return $attribute;
+    }
 
+    public function getQaStateAttribute()
+    {
+        $attribute = $this->_getQaStateAttribute();
         if ($this->hasAttribute($attribute)) {
             return $attribute;
         } else {
