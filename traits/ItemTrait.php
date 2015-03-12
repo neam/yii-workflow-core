@@ -305,7 +305,11 @@ trait ItemTrait
     {
         // Metadata
         $flowSteps = $this->definitionArrayWithSourceLanguageAttributes($this->flowSteps());
-        $statusRequirements = $this->definitionArrayWithSourceLanguageAttributes($this->statusRequirements());
+        if (in_array(get_class($this), array_keys(ItemTypes::where('is_preparable')))) {
+            $statusRequirements = $this->definitionArrayWithSourceLanguageAttributes($this->statusRequirements());
+        } else {
+            $statusRequirements = [];
+        }
 
         // Combine above to flow/step-dependent validation rules
         $flowStepRules = array();
