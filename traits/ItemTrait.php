@@ -94,7 +94,7 @@ trait ItemTrait
             $changeset = new Changeset();
             $changeset->contents = json_encode($qsStates);
             $changeset->user_id = Yii::app()->user->id;
-            $changeset->node_id = $model->node()->id;
+            $changeset->node_id = $model->ensureNode()->id;
             if (!$changeset->save()) {
                 throw new SaveException($changeset);
             }
@@ -116,10 +116,12 @@ trait ItemTrait
      */
     public function belongsToGroup($group)
     {
-        return PermissionHelper::nodeHasGroup(array(
-            'node_id' => $this->node_id,
-            'group_id' => PermissionHelper::groupNameToId($group),
-        ));
+        return PermissionHelper::nodeHasGroup(
+            array(
+                'node_id' => $this->node_id,
+                'group_id' => PermissionHelper::groupNameToId($group),
+            )
+        );
     }
 
     /**
@@ -175,9 +177,21 @@ trait ItemTrait
         }
 
         $statusRules = array();
-        $statusRules['draft'] = array(implode(', ', $statusRequirements['draft']), 'required', 'on' => 'draft,reviewable,publishable');
-        $statusRules['reviewable'] = array(implode(', ', $statusRequirements['reviewable']), 'required', 'on' => 'reviewable,publishable');
-        $statusRules['publishable'] = array(implode(', ', $statusRequirements['publishable']), 'required', 'on' => 'publishable');
+        $statusRules['draft'] = array(
+            implode(', ', $statusRequirements['draft']),
+            'required',
+            'on' => 'draft,reviewable,publishable'
+        );
+        $statusRules['reviewable'] = array(
+            implode(', ', $statusRequirements['reviewable']),
+            'required',
+            'on' => 'reviewable,publishable'
+        );
+        $statusRules['publishable'] = array(
+            implode(', ', $statusRequirements['publishable']),
+            'required',
+            'on' => 'publishable'
+        );
 
         // Manual fields that are required
         $statusRules[] = array('status', 'validStatusReviewable', 'on' => 'status_reviewable');
@@ -192,6 +206,11 @@ trait ItemTrait
      */
     public function isPublishable()
     {
+        // Obviously not publishable if not a preparable item
+        if (!isset($this->{$this->_getQaStateAttribute()})) {
+            return false;
+        }
+
         /** @var QaStateBehavior $qaStateBehavior */
         $qaStateBehavior = $this->qaStateBehavior();
 
@@ -231,10 +250,12 @@ trait ItemTrait
             return false;
         }
 
-        $result = NodeHasGroup::model()->findAllByAttributes(array(
-            'node_id' => $this->node_id,
-            'visibility' => NodeHasGroup::VISIBILITY_VISIBLE,
-        ));
+        $result = NodeHasGroup::model()->findAllByAttributes(
+            array(
+                'node_id' => $this->node_id,
+                'visibility' => PermissionHelper::VISIBILITY_VISIBLE,
+            )
+        );
 
         return !empty($result);
     }
@@ -250,9 +271,11 @@ trait ItemTrait
             return false;
         }
 
-        $result = NodeHasGroup::model()->findAllByAttributes(array(
-            'node_id' => $this->node_id,
-        ));
+        $result = NodeHasGroup::model()->findAllByAttributes(
+            array(
+                'node_id' => $this->node_id,
+            )
+        );
 
         return !empty($result);
     }
@@ -317,7 +340,14 @@ trait ItemTrait
 
             foreach ($fields as $field) {
                 $onStatuses = array();
-                $flowStepRules[] = array($field, 'safe', 'on' => implode("-step_$step,", array('temporary', 'draft', 'reviewable', 'publishable')) . "-step_$step,step_$step");
+                $flowStepRules[] = array(
+                    $field,
+                    'safe',
+                    'on' => implode(
+                            "-step_$step,",
+                            array('temporary', 'draft', 'reviewable', 'publishable')
+                        ) . "-step_$step,step_$step"
+                );
                 if (isset($statusRequirements['draft']) && in_array($field, $statusRequirements['draft'])) {
                     $onStatuses = array('draft', 'reviewable', 'publishable');
                 }
@@ -328,7 +358,11 @@ trait ItemTrait
                     $onStatuses = array('publishable');
                 }
                 if (!empty($onStatuses)) {
-                    $flowStepRules[] = array($field, 'required', 'on' => implode("-step_$step,", $onStatuses) . "-step_$step,step_$step");
+                    $flowStepRules[] = array(
+                        $field,
+                        'required',
+                        'on' => implode("-step_$step,", $onStatuses) . "-step_$step,step_$step"
+                    );
                 }
                 $flowStepRules[] = array($field, 'required', 'on' => "step_$step-total_progress");
             }
@@ -404,7 +438,7 @@ trait ItemTrait
         if ($this->hasAttribute($attribute)) {
             return $attribute;
         } else {
-            throw new CException("$modelClass does not have an attribute '$attribute'.");
+            throw new CException(get_class($this) . " does not have an attribute '$attribute'.");
         }
     }
 
@@ -432,7 +466,10 @@ trait ItemTrait
      */
     public function checkAccess($operation)
     {
-        return Yii::app()->user->checkAccess(get_class($this) . '.' . $operation, array('id' => $this->{$this->tableSchema->primaryKey}));
+        return Yii::app()->user->checkAccess(
+            get_class($this) . '.' . $operation,
+            array('id' => $this->{$this->tableSchema->primaryKey})
+        );
     }
 
     /**
