@@ -14,17 +14,15 @@ trait ItemTrait
     public $validationProgress = array();
 
     /**
-     * Returns the item label.
+     * Returns the default item label.
      * @return string
      */
-    public function getItemLabel()
+    public function defaultItemLabel($attribute = "label")
     {
-        /** @var CActiveRecord $this */
-
-        $classLabel = $this->getClassLabel();
-        $label = Yii::t('app', $classLabel, 1) . ' #' . $this->id;
-
-        return $label;
+        return (string) !empty($this->$attribute) ? $this->$attribute : ItemTypes::label(
+                get_class($this),
+                1
+            ) . " #" . $this->id;
     }
 
     public function getClassLabel()
