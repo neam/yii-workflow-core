@@ -19,10 +19,36 @@ trait ItemTrait
      */
     public function defaultItemLabel($attribute = "label")
     {
-        return (string) !empty($this->$attribute) ? $this->$attribute : ItemTypes::label(
-                get_class($this),
-                1
-            ) . " #" . $this->id;
+        return (string) !empty($this->$attribute) ? $this->$attribute : $this->getItemTypeLabel(1) . " #" . $this->id;
+    }
+
+    public function getItemTypeLabel($n = 1)
+    {
+        $class_name = get_class($this);
+        try {
+            $label = ItemTypes::label($class_name, $n);
+        } catch (ItemTypeLabelMissingException $e) {
+            $label = null;
+        }
+        if (!empty($label)) {
+            return $label;
+        }
+
+        // Traverse class parents until we find a defined item type label
+        foreach (class_parents($class_name) as $class_parent) {
+
+            try {
+                $label = ItemTypes::label($class_parent, $n);
+                if (!empty($label)) {
+                    return $label;
+                }
+            } catch (ItemTypeLabelMissingException $e) {
+                $label = null;
+            }
+
+        }
+
+        throw new CException("No item type label defined for $class_name");
     }
 
     public function getClassLabel()
