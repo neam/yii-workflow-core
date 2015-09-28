@@ -17,14 +17,14 @@ trait ItemTrait
      * Returns the default item label.
      * @return string
      */
-    public function defaultItemLabel($attribute = "label")
+    public function defaultItemLabel($attribute = "getLabel")
     {
-        return (string) !empty($this->$attribute) ? $this->$attribute : $this->getItemTypeLabel(1) . " #" . $this->id;
+        return (string) !empty($this->$attribute()) ? $this->$attribute() : $this->getItemTypeLabel(1) . " #" . $this->getId();
     }
 
     public function getItemTypeLabel($n = 1)
     {
-        $class_name = get_class($this);
+        $class_name = str_replace("propel\\models\\", "", get_class($this));
         try {
             $label = ItemTypes::label($class_name, $n);
         } catch (ItemTypeLabelMissingException $e) {
