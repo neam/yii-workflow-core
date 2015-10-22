@@ -1,6 +1,6 @@
 <?php
 
-trait ItemTrait
+trait WorkflowUiItemTrait
 {
 
     use TranslatableItemTrait;
